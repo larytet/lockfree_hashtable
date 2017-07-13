@@ -505,7 +505,7 @@ function store_fd(fd)
 	ARRAY_DUP_CALLED[tid] = fd
 }
 
-function hadle_ret()
+function handle_ret()
 {
 	tid = tid()
 	if (tid in ARRAY_DUP_CALLED)
@@ -541,7 +541,7 @@ probe syscall.dup3?
 
 probe syscall.dup.return, syscall.dup2.return, syscall.dup3.return?, syscall.read.return, syscall.write.return, syscall.close.return
 {
-	hadle_ret()
+	handle_ret()
 } 
 
 
