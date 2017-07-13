@@ -33,5 +33,3 @@ probe syscall.dup2.return
 	hadle_ret()
 } 
 
-
-%)

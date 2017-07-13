@@ -542,3 +542,6 @@ probe syscall.dup.return, syscall.dup2.return, syscall.dup3.return?, syscall.rea
 {
 	hadle_ret()
 } 
+
+
+%)
