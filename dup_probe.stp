@@ -396,7 +396,7 @@ static u64 counter_dup_missed;
 %}
 
 
-%( 1 == 1 %?
+%( 1 == 0 %?
 
 probe begin
 {
