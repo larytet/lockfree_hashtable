@@ -395,9 +395,9 @@ static u64 counter_dup_found;
 static u64 counter_dup_missed;
 %}
 
+@define USE_HASHTABLE %( 1 %)
 
-global USE_HASHTABLE=1
-%( USE_HASHTABLE == 1 %?
+%( @USE_HASHTABLE == 1 %?
 
 probe begin
 {
