@@ -396,7 +396,7 @@ static u64 counter_dup_missed;
 %}
 
 
-global USE_HASHTABLE = 1
+USE_HASHTABLE=1
 %( USE_HASHTABLE == 1 %?
 
 probe begin
