@@ -1,0 +1,37 @@
+
+global ARRAY_DUP_CALLED%
+
+probe begin
+{
+	printf("Probe is ready\n");
+}
+
+
+function store_fd(fd)
+{
+	tid = tid()
+	ARRAY_DUP_CALLED[tid] = fd
+}
+
+function hadle_ret()
+{
+	tid = tid()
+	if (tid in ARRAY_DUP_CALLED)
+	{
+ 		delete ARRAY_DUP_CALLED[tid]
+ 	}
+}
+
+
+probe syscall.dup2
+{
+	store_fd(oldfd)
+}
+
+probe syscall.dup2.return
+{
+	hadle_ret()
+} 
+
+
+%)
