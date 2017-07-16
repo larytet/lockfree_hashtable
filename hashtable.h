@@ -118,15 +118,16 @@ static int hashtable_show(char *buf, size_t len)
             continue;
 
         stat = &hashtable->__stat;
+#		define u64format " %12" PRIu64
         rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu"
-        		" %12" PRIu64
-        		" %12" PRIu64
-				" %12" PRIu64
-				" %12" PRIu64
-				" %12" PRIu64
-				" %12" PRIu64
-				" %12" PRIu64
-				" %12" PRIu64
+        		u64format
+        		u64format
+				u64format
+				u64format
+				u64format
+				u64format
+				u64format
+				u64format
 				"\n",
                 hashtable->name, hashtable->__size, hashtable->__memory_size,
                 stat->insert+stat->remove+stat->search,
