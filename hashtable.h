@@ -84,6 +84,8 @@ typedef struct
     uint64_t overwritten;
     uint64_t insert_err;
     uint64_t remove_err;
+    uint64_t search_ok;
+    uint64_t search_err;
 } hashtable_stat_t;
 
 static const char *hashtable_stat_names[] = {
@@ -94,6 +96,8 @@ static const char *hashtable_stat_names[] = {
 									    "Overwritten",
 									    "Insert_err",
 									    "Remove_err",
+									    "Search_ok",
+									    "Search_err",
 };
 
 typedef struct
@@ -140,7 +144,8 @@ static int hashtable_show(char *buf, size_t len)
             continue;
 
         rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu %12" PRIu64,
-        		hashtable->name, hashtable->__size, hashtable->__memory_size, hashtable->__stat.insert+hashtable->__stat.remove);
+        		hashtable->name, hashtable->__size, hashtable->__memory_size,
+				hashtable->__stat.insert+hashtable->__stat.remove+hashtable->__stat.search);
         chars += rc;
         stat = (uint64_t *)&hashtable->__stat;
         while (fieds_in_stat--)
@@ -412,9 +417,11 @@ static void hashtable_close(hashtable_t *hashtable)
             if (old_key == key)                                                                                                   \
             {                                                                                                                     \
                 *data = slot->data;                                                                                               \
+                hashtable->__stat.search_ok++;                                                                                    \
                 return 1;                                                                                                         \
             }                                                                                                                     \
         }                                                                                                                         \
+        hashtable->__stat.search_err++;                                                                                           \
                                                                                                                                   \
         return 0;                                                                                                                 \
     }                                                                                                                             \
