@@ -61,11 +61,18 @@ static int thread_job(void *thread_arg)
                     idx, value_to_store);
             return 1;
         }
-        rc = hashtable_uint32_remove(&hashtable, value_to_store, NULL);
+        uint32_t deleted_value;
+        rc = hashtable_uint32_remove(&hashtable, value_to_store, &deleted_value);
         if (!rc)
         {
             linux_log(LINUX_LOG_ERROR, "Thread %d failed to remove entry %u",
                     idx, value_to_store);
+            return 1;
+        }
+        if (deleted_value != value_to_store)
+        {
+            linux_log(LINUX_LOG_ERROR, "Thread %d removed wrong entry %u vs %u",
+                    idx, value_to_store, deleted_value);
             return 1;
         }
     }
