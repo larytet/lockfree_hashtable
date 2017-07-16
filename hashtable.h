@@ -87,13 +87,13 @@ typedef struct
 } hashtable_stat_t;
 
 static const char *hashtable_stat_names[] = {
-									    "insert",
-									    "remove",
-									    "search",
-									    "collision",
-									    "overwritten",
-									    "insert_err",
-									    "remove_err",
+									    "Insert",
+									    "Remove",
+									    "Search",
+									    "Collision",
+									    "Overwritten",
+									    "Insert_err",
+									    "Remove_err",
 };
 
 typedef struct
