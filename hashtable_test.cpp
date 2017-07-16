@@ -118,12 +118,19 @@ static int synchronous_access(int cpus)
     for (int i = 0;i < cpus;i++)
     {
         uint32_t value_to_store = get_value(i);
-        int rc = hashtable_uint32_remove(&hashtable, value_to_store, NULL);
+        uint32_t deleted_value;
+        int rc = hashtable_uint32_remove(&hashtable, value_to_store, &deleted_value);
         if (!rc)
         {
             linux_log(LINUX_LOG_ERROR, "Thread %d failed to remove entry %u",
                     i, value_to_store);
             return 0;
+        }
+        if (deleted_value != value_to_store)
+        {
+            linux_log(LINUX_LOG_ERROR, "Thread %d removed wrong entry %u vs %u",
+                    i, value_to_store, deleted_value);
+            return 1;
         }
     }
     return 1;
