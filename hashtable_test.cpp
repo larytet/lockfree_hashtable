@@ -54,7 +54,7 @@ static int thread_job(void *thread_arg)
 
     while (1)
     {
-        int rc = hashtable_uint32_insert(&hashtable, value_to_store, 0);
+        int rc = hashtable_uint32_insert(&hashtable, value_to_store, value_to_store);
         if (!rc)
         {
             linux_log(LINUX_LOG_ERROR, "Thread %d failed to insert entry %u",
@@ -107,7 +107,7 @@ static int synchronous_access(int cpus)
     for (int i = 0;i < cpus;i++)
     {
         uint32_t value_to_store = get_value(i);
-        int rc = hashtable_uint32_insert(&hashtable, value_to_store, 0);
+        int rc = hashtable_uint32_insert(&hashtable, value_to_store, value_to_store);
         if (!rc)
         {
             linux_log(LINUX_LOG_ERROR, "Thread %d failed to insert entry %u",
