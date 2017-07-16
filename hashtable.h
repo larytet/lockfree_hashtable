@@ -113,32 +113,22 @@ static int hashtable_show(char *buf, size_t len)
     for (i = 0;i < ARRAY_SIZE(hashtable_registry);i++)
     {
         hashtable_t *hashtable = hashtable_registry[i];
-        hashtable_stat_t *stat;
+        uint64_t *stat, *stat_end;
         if (!hashtable)
             continue;
 
-        stat = &hashtable->__stat;
-#		define u64format " %12" PRIu64
-        rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu"
-        		u64format
-        		u64format
-				u64format
-				u64format
-				u64format
-				u64format
-				u64format
-				u64format
-				"\n",
-                hashtable->name, hashtable->__size, hashtable->__memory_size,
-                stat->insert+stat->remove+stat->search,
-				stat->insert,
-				stat->remove,
-				stat->search,
-				stat->collision,
-				stat->overwritten,
-				stat->insert_err,
-				stat->remove_err
-        );
+        rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu %12" PRIu64,
+        		hashtable->name, hashtable->__size, hashtable->__memory_size, hashtable->__stat.insert+hashtable->__stat.remove);
+        chars += rc;
+        stat = (uint64_t *)&hashtable->__stat;
+        stat_end = (uint8_t*)stat+sizeof(*stat);
+        while (stat != stat_end)
+        {
+            rc = snprintf(buf+chars, len-chars, " %12" PRIu64, *stat);
+            stat++;
+            chars += rc;
+        }
+        rc = snprintf(buf+chars, len-chars, "\n");
         chars += rc;
     }
     return chars;
