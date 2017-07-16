@@ -86,6 +86,16 @@ typedef struct
     uint64_t remove_err;
 } hashtable_stat_t;
 
+static const char *hashtable_stat_names[] = {
+									    "insert",
+									    "remove",
+									    "search",
+									    "collision",
+									    "overwritten",
+									    "insert_err",
+									    "remove_err",
+};
+
 typedef struct
 {
     const char *name;
@@ -106,8 +116,19 @@ static int hashtable_show(char *buf, size_t len)
     size_t i;
     int rc;
     size_t chars = 0;
-    rc = snprintf(buf+chars, len-chars, "\n%-25s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s \n",
-            "Name", "Size", "Memory", "Ops", "Insert", "Remove", "Search", "Collision", "Overwritten", "InsertErr", "RemoveErr");
+    const char** stat_name = &hashtable_stat_names[0];
+    size_t fieds_in_stat = sizeof(hashtable_stat_t)/sizeof(uint64_t);
+    rc = snprintf(buf+chars, len-chars, "\n%-25s %12s %12s %12s",
+            "Name", "Size", "Memory", "Ops");
+
+    while (fieds_in_stat--)
+    {
+        rc = snprintf(buf+chars, len-chars, " %12s", *stat_name);
+        stat_name++;
+        chars += rc;
+    }
+    rc = snprintf(buf+chars, len-chars, "\n");
+    chars += rc;
 
     chars += rc;
     for (i = 0;i < ARRAY_SIZE(hashtable_registry);i++)
