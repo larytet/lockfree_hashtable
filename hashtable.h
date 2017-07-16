@@ -81,6 +81,7 @@ typedef struct
     uint64_t remove;
     uint64_t search;
     uint64_t collision;
+    uint64_t overwritten;
     uint64_t insert_err;
     uint64_t remove_err;
 } hashtable_stat_t;
@@ -105,8 +106,8 @@ static int hashtable_show(char *buf, size_t len)
     size_t i;
     int rc;
     size_t chars = 0;
-    rc = snprintf(buf+chars, len-chars, "\n%-25s %12s %12s %12s %12s %12s %12s %12s %12s %12s \n",
-            "Name", "Size", "Memory", "Ops", "Insert", "Remove", "Search", "Collision", "InsertErr", "RemoveErr");
+    rc = snprintf(buf+chars, len-chars, "\n%-25s %12s %12s %12s %12s %12s %12s %12s %12s %12s %12s \n",
+            "Name", "Size", "Memory", "Ops", "Insert", "Remove", "Search", "Collision", "Overwritten", "InsertErr", "RemoveErr");
 
     chars += rc;
     for (i = 0;i < ARRAY_SIZE(hashtable_registry);i++)
@@ -117,9 +118,17 @@ static int hashtable_show(char *buf, size_t len)
             continue;
 
         stat = &hashtable->__stat;
-        rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu %12" PRIu64 " %12" PRIu64  " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 "\n",
+        rc = snprintf(buf+chars, len-chars, "%-25s %12zu %12zu"
+        		" %12" PRIu64
+        		" %12" PRIu64
+				" %12" PRIu64
+				" %12" PRIu64
+				" %12" PRIu64
+				" %12" PRIu64
+				" %12" PRIu64
+				" %12" PRIu64 "\n",
                 hashtable->name, hashtable->__size, hashtable->__memory_size,
-                stat->insert+stat->remove+stat->search, stat->insert, stat->remove, stat->search, stat->collision, stat->insert_err, stat->remove_err
+                stat->insert+stat->remove+stat->search, stat->insert, stat->remove, stat->search, stat->collision, stat->overwritten, stat->insert_err, stat->remove_err
         );
         chars += rc;
     }
@@ -314,6 +323,12 @@ static void hashtable_close(hashtable_t *hashtable)
                 slot->data = data;                                                                                                \
                 return 1;                                                                                                         \
             }                                                                                                                     \
+            else if (old_key == key)                                                                                              \
+			{                                                                                                                     \
+                slot->data = data;                                                                                                \
+                hashtable->__stat.overwritten++;                                                                                  \
+                return 1;                                                                                                         \
+			}                                                                                                                     \
             else                                                                                                                  \
             {                                                                                                                     \
                 hashtable->__stat.collision++;                                                                                    \
