@@ -61,6 +61,22 @@ static int thread_job(void *thread_arg)
                     idx, value_to_store);
             return 1;
         }
+
+        uint32_t found_value;
+        rc = hashtable_uint32_find(&hashtable, value_to_store, &found_value);
+        if (!rc)
+        {
+            linux_log(LINUX_LOG_ERROR, "Thread %d failed to find entry %u",
+                    idx, value_to_store);
+            return 1;
+        }
+        if (found_value != value_to_store)
+        {
+            linux_log(LINUX_LOG_ERROR, "Thread %d found wrong entry %u vs %u",
+                    idx, value_to_store, found_value);
+            return 1;
+        }
+
         uint32_t deleted_value;
         rc = hashtable_uint32_remove(&hashtable, value_to_store, &deleted_value);
         if (!rc)
