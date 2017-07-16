@@ -129,7 +129,14 @@ static int hashtable_show(char *buf, size_t len)
 				" %12" PRIu64
 				"\n",
                 hashtable->name, hashtable->__size, hashtable->__memory_size,
-                stat->insert+stat->remove+stat->search, stat->insert, stat->remove, stat->search, stat->collision, stat->overwritten, stat->insert_err, stat->remove_err
+                stat->insert+stat->remove+stat->search,
+				stat->insert,
+				stat->remove,
+				stat->search,
+				stat->collision,
+				stat->overwritten,
+				stat->insert_err,
+				stat->remove_err
         );
         chars += rc;
     }
