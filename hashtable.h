@@ -120,6 +120,7 @@ static int hashtable_show(char *buf, size_t len)
     size_t fieds_in_stat = sizeof(hashtable_stat_t)/sizeof(uint64_t);
     rc = snprintf(buf+chars, len-chars, "\n%-25s %12s %12s %12s",
             "Name", "Size", "Memory", "Ops");
+    chars += rc;
 
     while (fieds_in_stat--)
     {
