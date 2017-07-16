@@ -99,6 +99,13 @@ static int thread_job(void *thread_arg)
                     idx, value_to_store, deleted_value);
             return 1;
         }
+        rc = hashtable_uint32_find(&hashtable, value_to_store, &found_value);
+        if (rc)
+        {
+            linux_log(LINUX_LOG_ERROR, "Thread %d found non-existing key %u",
+                    idx, value_to_store);
+            return 1;
+        }
     }
 
 
