@@ -129,7 +129,6 @@ static int hashtable_show(char *buf, size_t len)
         chars += rc;
     }
     rc = snprintf(buf+chars, len-chars, "\n");
-    chars += rc;
 
     chars += rc;
     for (i = 0;i < ARRAY_SIZE(hashtable_registry);i++)
