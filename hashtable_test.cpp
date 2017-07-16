@@ -49,7 +49,7 @@ static int thread_job(void *thread_arg)
 {
     int idx = (int)(size_t)thread_arg;
 
-    uint32_t value_to_store = get_value(idx);
+    uint32_t value_to_store = get_value_collision(idx);
 
 
     while (1)
