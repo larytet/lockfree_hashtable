@@ -121,7 +121,7 @@ static int hashtable_show(char *buf, size_t len)
         		hashtable->name, hashtable->__size, hashtable->__memory_size, hashtable->__stat.insert+hashtable->__stat.remove);
         chars += rc;
         stat = (uint64_t *)&hashtable->__stat;
-        stat_end = (uint8_t*)stat+sizeof(*stat);
+        stat_end = (uint64_t*)((uint8_t*)stat+sizeof(hashtable_stat_t));
         while (stat != stat_end)
         {
             rc = snprintf(buf+chars, len-chars, " %12" PRIu64, *stat);
