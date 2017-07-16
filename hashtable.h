@@ -113,7 +113,8 @@ static int hashtable_show(char *buf, size_t len)
     for (i = 0;i < ARRAY_SIZE(hashtable_registry);i++)
     {
         hashtable_t *hashtable = hashtable_registry[i];
-        uint64_t *stat, *stat_end;
+        size_t fieds_in_stat = sizeof(hashtable_stat_t)/sizeof(uint64_t);
+        uint64_t *stat;
         if (!hashtable)
             continue;
 
@@ -121,8 +122,7 @@ static int hashtable_show(char *buf, size_t len)
         		hashtable->name, hashtable->__size, hashtable->__memory_size, hashtable->__stat.insert+hashtable->__stat.remove);
         chars += rc;
         stat = (uint64_t *)&hashtable->__stat;
-        stat_end = (uint64_t*)((uint8_t*)stat+sizeof(hashtable_stat_t));
-        while (stat != stat_end)
+        while (fieds_in_stat--)
         {
             rc = snprintf(buf+chars, len-chars, " %12" PRIu64, *stat);
             stat++;
