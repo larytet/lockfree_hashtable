@@ -10,4 +10,4 @@ Compile
 
 Performance
 
-The hashtable hits 10M API calls per second on a single i7 core at cost of ~20nanos for an API call.
+The hashtable hits 50M API calls per second on a single i7 core at cost of ~20nanos for an API call.
