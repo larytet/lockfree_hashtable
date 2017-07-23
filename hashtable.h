@@ -315,7 +315,7 @@ static void hashtable_close(hashtable_t *hashtable)
             hashtable->__size = (1 << hashtable->bits);                                                                           \
             hashtable->__memory_size = memory_size;                                                                               \
             hashtable->__table = p;                                                                                               \
-            for (i = 0;i < hashtable->__size;i++)                                                                                 \
+            for (i = 0;i < (hashtable->__size+max_tries);i++)                                                                     \
             {                                                                                                                     \
                 hashtable_## tokn ## _init_slot(HASHTABLE_SLOT_ADDR(hashtable, tokn, i));                                         \
             }                                                                                                                     \
