@@ -337,11 +337,11 @@ static void hashtable_close(hashtable_t *hashtable)
         const uint32_t index = hashtable_get_index(hashtable, hash);                                                              \
         /* I can do this for the last slot too - I allocated max_tries more slots */                                              \
         const uint32_t index_max = index+max_tries;                                                                               \
-        uint32_t i;                                                                                                               \
+        hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, index);                                          \
+        const hashtable_## tokn ##_slot_t *slot_max = HASHTABLE_SLOT_ADDR(hashtable, tokn, index_max);                            \
         hashtable->__stat.insert++;                                                                                               \
-        for (i = index;i < index_max;i++)                                                                                         \
+        for (;slot < slot_max;slot++)                                                                                             \
         {                                                                                                                         \
-            hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, i);                                          \
             uint32_t old_key = HASHTABLE_CMPXCHG(&slot->key, illegal_key, key);                                                   \
             if (likely(old_key == illegal_key)) /* Success */                                                                     \
             {                                                                                                                     \
@@ -375,11 +375,11 @@ static void hashtable_close(hashtable_t *hashtable)
         const uint32_t index = hashtable_get_index(hashtable, hash);                                                              \
         /* I can do this for the last slot too - I allocated max_tries more slots */                                              \
         const uint32_t index_max = index+max_tries;                                                                               \
-        uint32_t i;                                                                                                               \
+        hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, index);                                          \
+        const hashtable_## tokn ##_slot_t *slot_max = HASHTABLE_SLOT_ADDR(hashtable, tokn, index_max);                            \
         hashtable->__stat.remove++;                                                                                               \
-        for (i = index;i < index_max;i++)                                                                                         \
+        for (;slot < slot_max;slot++)                                                                                             \
         {                                                                                                                         \
-            hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, i);                                          \
             uint32_t old_key = slot->key;                                                                                         \
             if (likely(old_key == key))                                                                                           \
             {                                                                                                                     \
@@ -408,11 +408,11 @@ static void hashtable_close(hashtable_t *hashtable)
         const uint32_t index = hashtable_get_index(hashtable, hash);                                                              \
         /* I can do this for the last slot too - I allocated max_tries more slots */                                              \
         const uint32_t index_max = index+max_tries;                                                                               \
-        uint32_t i;                                                                                                               \
+        hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, index);                                          \
+        const hashtable_## tokn ##_slot_t *slot_max = HASHTABLE_SLOT_ADDR(hashtable, tokn, index_max);                            \
         hashtable->__stat.search++;                                                                                               \
-        for (i = index;i < index_max;i++)                                                                                         \
+        for (;slot < slot_max;slot++)                                                                                             \
         {                                                                                                                         \
-            hashtable_## tokn ##_slot_t *slot = HASHTABLE_SLOT_ADDR(hashtable, tokn, i);                                          \
             uint32_t old_key = slot->key;                                                                                         \
             if (old_key == key)                                                                                                   \
             {                                                                                                                     \
