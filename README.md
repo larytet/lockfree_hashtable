@@ -11,9 +11,10 @@ probes latency by 30% and more depending on the scenario.
 
 ## Limitations   
 
-#  Key is of integral type
-#  A single context is allowed to insert/remove a specific key. Many contexts can insert/remove different keys.
-#  GCC is assumed 
+
+*  Key is of integral type
+*  A single context is allowed to insert/remove a specific key. Many contexts can insert/remove different keys.
+*  GCC is assumed 
  
 ## Compile
 
