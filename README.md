@@ -1,6 +1,17 @@
 # lockfree_hashtable
 
-Compile
+This is a lock free/wait free hashtable implemented in C. There is an alternative C++ template based 
+implementation in the https://github.com/larytet/emcpp
+The hashtable's original goal is to replace SystemTap's associative arrays. The hashtable reduces the 
+probes latency by 30% and more depending on the scenario.
+
+## Limitations   
+
+#  Key is of integral type
+#  A single context is allowed to insert/remove a specific key. Many contexts can insert/remove different keys.
+#  GCC is assumed 
+ 
+## Compile
 
 * 'make' should be enough to build the unitest
 *  Load and run the SystemTap module: sudo stap -g -v -k --suppress-time-limits -D MAXSKIPPED=0  dup_probe.stp 
